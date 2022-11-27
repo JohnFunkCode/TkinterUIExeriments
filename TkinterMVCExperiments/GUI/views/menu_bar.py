@@ -57,4 +57,4 @@ class MenuBar:
         self.app_container.data_load_view.highlight_age_error(33)
 
     def test_two(self):
-        self.app_container.data_load_view.goto_row_column(22,'Age')
+        self.app_container.data_load_view.goto_row_column(11,'Age')
