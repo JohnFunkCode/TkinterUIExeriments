@@ -1,16 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter.messagebox import showinfo
 import tkinter.scrolledtext as scrolledtext
-
-import pandas as pd
 from pandastable import Table, TableModel
 
-
-class DataLoadView(ttk.Frame):
-    def __init__(self, app_container):
+class DataValidationView(ttk.Frame):
+    def __init__(self, app_container, controller):
         super().__init__(app_container)
         self.app_container = app_container
+        self.controller=controller
 
         # field options
         options = {'padx': 5, 'pady': 5}
@@ -27,9 +24,6 @@ class DataLoadView(ttk.Frame):
         self.table = Table(parent=self.pandas_table_frame, model=TableModel(app_container.database),
                            showtoolbar=False, showstatusbar=False, enable_menus=False, width=1550, height=400)
         self.pandas_table_frame.grid(column=0,row=1,columnspan=3,**options)
-        # self.table.cellbackgr='#FF0000'
-        # self.table.boxoutlinecolor='#00FF00'
-        # self.table.grid_color='#0000FF'
         self.table.redraw()
 
         # error log label
@@ -45,23 +39,21 @@ class DataLoadView(ttk.Frame):
         self.button_1['command'] = self.process_data
         self.button_1.grid(column=3, row=4, sticky=tk.E, **options)
 
-
-
-    def show_it(self):
+    def show_view(self):
         self.grid()
 
-    def hide_it(self):
+    def hide_view(self):
         self.grid_forget()
 
     def process_data(self):
-        showinfo(title='Info', message="Start processing data")
+        self.controller.process_data() ;
 
     def update_table(self):
         self.table.updateModel(TableModel(self.app_container.database))
 
     def highlight_age_error(self, row_with_error):
         error_rows = range(row_with_error-1,row_with_error)
-        age_column = self.app_container.database.columns.get_loc('Age')
+        age_column = self.table.model.get_loc('Age')
         age_columns = range(age_column,age_column+1)
         self.table.setRowColors(rows=error_rows,clr='red',cols=age_columns)
         self.table.redraw()
