@@ -53,7 +53,7 @@ class DataValidationView(ttk.Frame):
 
     def highlight_age_error(self, row_with_error):
         error_rows = range(row_with_error-1,row_with_error)
-        age_column = self.table.model.get_loc('Age')
+        age_column = self.table.model.df.columns.get_loc('Age')
         age_columns = range(age_column,age_column+1)
         self.table.setRowColors(rows=error_rows,clr='red',cols=age_columns)
         self.table.redraw()
